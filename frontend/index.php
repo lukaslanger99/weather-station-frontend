@@ -4,7 +4,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
     <head>
-        <title>TaskBoard</title>
+        <title>Wheater-Station-Frontend</title>
         <link rel="stylesheet" type="text/css" href="style/style.css">
         <style>
             .select {
