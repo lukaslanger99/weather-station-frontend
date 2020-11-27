@@ -43,6 +43,17 @@
         </style>
     </head>
     <body>
+        <script>
+            var request = new XMLHttpRequest();
+
+            request.open('GET', 'url', true);
+            request.send();
+
+            request.onreadystatechange = (e) => {
+                var data = request.responseText;
+                console.log(data)
+            }
+        </script>
         <div class="select">
             <form action="index.php" method="post" autocomplete="off">
                 <select name="station" id="station">
