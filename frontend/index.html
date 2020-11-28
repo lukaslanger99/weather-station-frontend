@@ -44,48 +44,31 @@
     </head>
     <body>
         <script>
-            var request = new XMLHttpRequest();
+            // var request = new XMLHttpRequest();
 
-            request.open('GET', 'url', true);
-            request.send();
+            // request.open('GET', 'url', true);
+            // request.send();
 
-            request.onreadystatechange = (e) => {
-                var data = request.responseText;
-                console.log(data)
-            }
+            // request.onreadystatechange = (e) => {
+            //     var data = request.responseText;
+            //     console.log(data)
+            // }
         </script>
         <div class="select">
-            <form action="index.php" method="post" autocomplete="off">
-                <select name="station" id="station">
+                <select name="station" id="stationList">
                     <option value="Station1">Station 1</option>
                     <option value="Station2">Station 2</option>
                     <option value="Station3">Station 3</option>
                 </select>
-                <input type="submit" value="Submit">
-            </form>
         </div>
+        <div class="box">
+            <div class="title"></div>
+            <div class="degrees"></div>
+            <div class="date"></div>
+        </div>
+        <script>
+            var stations = document.getElementById("stationList");
+            var stationName = stations.value;
+        </script>
     </body>
 </html>
-
-<?php
-    $ws = new WeatherStation();
-    $data = $ws->getData();
-    if ($_POST['station']) {
-        echo '
-        <div class="box">
-            <div class="title">'.$_POST['station'].'</div>
-            <div class="degrees">'.$data[$_POST['station']].'° C</div>
-            <div class="date">'.date("H:i - d.m.Y").'</div>
-        </div>
-        ';
-    }
-
-class WeatherStation {
-    public function getData() {
-        return [
-            'Station1' => 23,
-            'Station2' => 25,
-            'Station3' => 27
-        ];
-    }
-}
