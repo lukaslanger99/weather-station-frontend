@@ -44,15 +44,18 @@
     </head>
     <body>
         <script>
-            // var request = new XMLHttpRequest();
+            var request = new XMLHttpRequest();
+            var url = "url";
 
-            // request.open('GET', 'url', true);
-            // request.send();
-
-            // request.onreadystatechange = (e) => {
-            //     var data = request.responseText;
-            //     console.log(data)
-            // }
+            request.onreadystatechange = function() {
+            
+              if (request.readyState == 4 && request.status == 200) { 
+                var jsonData = JSON.parse(request.responseText);
+                console.log(jsonData);
+              }
+            };
+            request.open("GET", url, true);
+            request.send();
         </script>
         <div class="select">
                 <select name="station" id="stationList">
