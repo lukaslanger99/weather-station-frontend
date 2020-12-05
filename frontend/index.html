@@ -5,73 +5,29 @@
 <html lang="en">
     <head>
         <title>Wheater-Station-Frontend</title>
-        <link rel="stylesheet" type="text/css" href="style/style.css">
-        <style>
-            .select {
-                text-align: center;
-            }
-
-            .box {
-                width: 450px;
-                height: 250px;
-                background-color: #f2f2f2;
-                border: 1px solid #337ab7;
-                border-radius: 5px;
-                text-align: center;
-                position: relative;
-                margin: auto;
-                margin-top: 50px;
-            }
-
-            .title {
-                margin-top: 10%;
-                font-size: large;
-                font-weight: 700;
-            }
-
-            .degrees {
-                margin-top: 10%;
-                font-size: xx-large;
-                font-weight: 400;
-            }
-
-            .date {
-                margin-top: 10%;
-                font-size: large;
-                font-weight: 400;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="script.js"></script>
     </head>
     <body>
-        <script>
-            var request = new XMLHttpRequest();
-            var url = "url";
-
-            request.onreadystatechange = function() {
-            
-              if (request.readyState == 4 && request.status == 200) { 
-                var jsonData = JSON.parse(request.responseText);
-                console.log(jsonData);
-              }
-            };
-            request.open("GET", url, true);
-            request.send();
-        </script>
         <div class="select">
-                <select name="station" id="stationList">
-                    <option value="Station1">Station 1</option>
-                    <option value="Station2">Station 2</option>
-                    <option value="Station3">Station 3</option>
+                <select name="station" id="stationList" onchange="updateStationSelection()">
+                    <option disabled selected value> -- select station -- </option>
+                    <option value="WF">WF</option>
+                    <option value="BS">BS</option>
                 </select>
         </div>
         <div class="box">
-            <div class="title"></div>
-            <div class="degrees"></div>
-            <div class="date"></div>
+            <div id="title" class="title"></div>
+            <div id="degrees" class="degrees"></div>
+            <div id="humidity" class="humidity"></div>
+            <div id="date" class="date"></div>
         </div>
         <script>
-            var stations = document.getElementById("stationList");
-            var stationName = stations.value;
+            json = getJSON();
+            document.getElementById("title").innerHTML = "Station: "+json.stationId;
+            document.getElementById("degrees").innerHTML = json.temperature+" °C";
+            document.getElementById("humidity").innerHTML = "Luftfeuchtigkeit: "+json.humidity+"%";
+            document.getElementById("date").innerHTML = json.time;
         </script>
     </body>
 </html>
