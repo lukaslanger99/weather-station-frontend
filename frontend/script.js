@@ -28,7 +28,7 @@ function getJSONFromBackend(station) {
 }
 
 function showData(data) {
-    document.getElementById("title").innerHTML = "Station: "+data.stationId;
+    document.getElementById("title").innerHTML = "Station: "+idToName(data.stationId);
     document.getElementById("degrees").innerHTML = data.temperature+" °C";
     document.getElementById("humidity").innerHTML = "Luftfeuchtigkeit: "+data.humidity+"%";
     document.getElementById("date").innerHTML = data.time;
