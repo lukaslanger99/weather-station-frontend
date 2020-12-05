@@ -23,11 +23,10 @@
             <div id="date" class="date"></div>
         </div>
         <script>
+            // later use this
+            // json = getJSONFromBackend(getSelectedStation());
             json = getJSON();
-            document.getElementById("title").innerHTML = "Station: "+json.stationId;
-            document.getElementById("degrees").innerHTML = json.temperature+" °C";
-            document.getElementById("humidity").innerHTML = "Luftfeuchtigkeit: "+json.humidity+"%";
-            document.getElementById("date").innerHTML = json.time;
+            showData(json);
         </script>
     </body>
 </html>

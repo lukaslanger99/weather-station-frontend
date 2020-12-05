@@ -15,3 +15,19 @@ function updateStationSelection() {
     var stationName = stations.value;
     console.log("selected station: "+stationName);
 }
+
+function getSelectedStation() {
+    var stations = document.getElementById("stationList");
+    return stations.value;
+}
+
+function getJSONFromBackend(station) {
+    //TODO
+}
+
+function showData(data) {
+    document.getElementById("title").innerHTML = "Station: "+data.stationId;
+    document.getElementById("degrees").innerHTML = data.temperature+" °C";
+    document.getElementById("humidity").innerHTML = "Luftfeuchtigkeit: "+data.humidity+"%";
+    document.getElementById("date").innerHTML = data.time;
+}
