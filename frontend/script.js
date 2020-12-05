@@ -23,6 +23,8 @@ function getSelectedStation() {
 
 function getJSONFromBackend(station) {
     //TODO
+    url = "";
+    ws = new WebSocket(url);
 }
 
 function showData(data) {
