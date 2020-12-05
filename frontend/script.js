@@ -31,3 +31,15 @@ function showData(data) {
     document.getElementById("humidity").innerHTML = "Luftfeuchtigkeit: "+data.humidity+"%";
     document.getElementById("date").innerHTML = data.time;
 }
+
+function idToName(id) {
+    if (id == 0) {
+        return "GOE";
+    } else if (id == 1) {
+        return "WF";
+    } else if (id == 2) {
+        return "BS";
+    } else {
+        return "ERROR";
+    }
+}
