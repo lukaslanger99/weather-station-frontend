@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <title>Wheater-Station-Frontend</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="script.js"></script>
+        <script src="WebSocketTest.js"></script>
+    </head>
+    <body>
+        <div class="select">
+                <select name="station" id="stationList" onchange="updateStationSelection()">
+                    <option disabled selected value> -- select station -- </option>
+                    <option value="GOE">GOE</option>
+                    <option value="WF">WF</option>
+                    <option value="BS">BS</option>
+                </select>
+        </div>
+        <div class="box">
+            <div id="title" class="title"></div>
+            <div id="degrees" class="degrees"></div>
+            <div id="humidity" class="humidity"></div>
+            <div id="date" class="date"></div>
+        </div>
+        <script>
+            // later use this
+            // json = getJSONFromBackend(getSelectedStation());
+            json = getJSON();
+            showData(json);
+        </script>
+    </body>
+</html>
