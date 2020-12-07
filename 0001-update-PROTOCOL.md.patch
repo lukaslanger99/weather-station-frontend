@@ -1,0 +1,113 @@
+From c8e3d5c245caf064c733988e8e9d467db2513874 Mon Sep 17 00:00:00 2001
+From: Rachid Mzannar <r.mzannar@ostfalia.de>
+Date: Sun, 6 Dec 2020 16:23:52 +0100
+Subject: [PATCH] update PROTOCOL.md
+
+---
+ PROTOCOL.md | 58 +++++++++++++-------------------------------
+ 1 file changed, 17 insertions(+), 41 deletions(-)
+
+diff --git a/PROTOCOL.md b/PROTOCOL.md
+index 97650f4..969de24 100644
+--- a/PROTOCOL.md
++++ b/PROTOCOL.md
+@@ -4,27 +4,14 @@ Describes the basic protocol between the Server and the Frontend.
+ > Sending a request for station Ids
+ ```json
+ {
+-    "id": 2
++    "id": 1
+ }
+ ```
+ > Receiving station Ids
+ ```json
+ {
+-    "id": 3,
+-    "stations": [
+-        {
+-            "id": 0,
+-            "stationId": 0
+-        },
+-        {
+-            "id": 0,
+-            "stationId": 1
+-        },
+-        {
+-            "id": 0,
+-            "stationId": 2
+-        }
+-    ]
++    "id": 1,
++    "stations": [0, 1, 2]
+ }
+ ```
+ 
+@@ -32,24 +19,7 @@ Describes the basic protocol between the Server and the Frontend.
+ ```json
+ {
+     "id": 0,
+-    "stationId": 1
+-}
+-```
+-
+-> Sending a weather status request (multiple stations):
+-```json
+-{
+-    "id": 4,
+-    "stations": [
+-        {
+-            "id": 0,
+-            "stationId": 1
+-        },
+-        {
+-            "id": 0,
+-            "stationId": 2
+-        }
+-    ]
++    "stationIds": [1]
+ }
+ ```
+ 
+@@ -64,25 +34,31 @@ Describes the basic protocol between the Server and the Frontend.
+ }
+ ```
+ 
++> Sending a weather status request (multiple stations):
++```json
++{
++    "id": 0,
++    "stationIds": [1, 2]
++}
++```
++
+ > Receiving a weather status response(multiple stations):
+ ```json
+ {
+-    "id": 5,
++    "id": 0,
+     "stations": [
+         {
+-            "id": 0,
+             "stationId": 1,
+             "temperature": 27.4,
+             "humidity": 44.2,
+             "time": "2021-01-01 14:03:55"
+         },
+         {
+-            "id": 0,
+             "stationId": 2,
+-            "temperature": 27.4,
+-            "humidity": 44.2,
+-            "time": "2021-01-01 14:03:55"
++            "temperature": 30.0,
++            "humidity": 84.8,
++            "time": "2021-01-01 18:48:29"
+         }
+     ]
+ }
+-```
+\ No newline at end of file
++```
+-- 
+2.28.0
+
