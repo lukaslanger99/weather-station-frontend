@@ -1,6 +1,5 @@
-const SINGLE_STATION_RESPONSE = 0;
-const STATIONIDS_RESPONSE = 3;
-const MULTIPLE_STATIONS_RESPONSE = 5;
+const STATIONIDS_RESPONSE = 1;
+const WEATHER_RESPONSE = 0;
 
 function getJSON() {
     const obj = {
@@ -20,15 +19,38 @@ function updateStationSelection() {
     console.log("selected station: "+stationName);
 }
 
-function updateCheckboxList() {
-    var checkboxes = document.querySelectorAll("input[type=checkbox][name=station]");
-    let enabledSettings = []
+function getStations() {
+    //TODO send request to server
+    const obj = {
+        "id": 1,
+        "stations": [0, 1, 2]
+      };
+    const objStr = JSON.stringify(obj);
+    return JSON.parse(objStr);
+}
 
+function createCheckboxList() {
+    stationsJSON = getStations();
+    stationIDs = stationsJSON.stations;
+    var html = "";
+    stationIDs.forEach(station => {
+        var stationName = idToName(station);
+        html += "<label><input type=\"checkbox\" name=\"station\" value=\""+stationName+"\">"+stationName+"</label>"
+    });
+    console.log(html);
+    document.getElementById("checkboxgroup").innerHTML = html;
+
+    addCheckboxListener();
+}
+
+function addCheckboxListener() {
+    var checkboxes = document.querySelectorAll("input[type=checkbox][name=station]");
+    var enabledSettings = [];            
     checkboxes.forEach(function(checkbox) {
       checkbox.addEventListener('change', function() {
         enabledSettings = Array.from(checkboxes).filter(i => i.checked).map(i => i.value);
-    })
-    console.log(enabledSettings);
+        console.log(enabledSettings);
+        })
     });
 }
 
@@ -64,13 +86,10 @@ function idToName(id) {
 
 function parseResponse(json) {
     switch (json.id) {
-        case SINGLE_STATION_RESPONSE:
+        case STATIONIDS_RESPONSE:
             
             break;
-        case STATIONIDS_RESPONSE:
-        
-            break;
-        case MULTIPLE_STATIONS_RESPONSE:
+        case WEATHER_RESPONSE:
         
             break;
     

@@ -4,23 +4,20 @@
         <title>Wheater-Station-Frontend</title>
         <link rel="stylesheet" type="text/css" href="style.css">
         <script src="script.js"></script>
-        <script src="WebSocketTest.js"></script>
     </head>
     <body>
-        <fieldset class="checkboxgroup" id="checkboxgroup" onchange="updateCheckboxList()">
-            <p>Stations</p>
-            <label><input type="checkbox" name="station" value="GOE"> GOE </label>
+        <script>
+        </script>
+
+        <div class="checkboxgroup" id="checkboxgroup">
+            <!-- <label><input type="checkbox" name="station" value="GOE"> GOE </label>
             <label><input type="checkbox" name="station" value="WF"> WF </label>
-            <label><input type="checkbox" name="station" value="BS"> BS </label>
-        </fieldset>
-        <div class="select">
-                <select name="station" id="stationList" onchange="updateStationSelection()">
-                    <option disabled selected value> -- select station -- </option>
-                    <option value="GOE">GOE</option>
-                    <option value="WF">WF</option>
-                    <option value="BS">BS</option>
-                </select>
+            <label><input type="checkbox" name="station" value="BS"> BS </label> -->
         </div>
+        <script>
+            createCheckboxList();
+        </script>
+
         <div class="box">
             <div id="title" class="title"></div>
             <div id="degrees" class="degrees"></div>

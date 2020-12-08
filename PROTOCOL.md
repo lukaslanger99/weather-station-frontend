@@ -20,17 +20,26 @@ Thus the payload becomes:
 
 Now the server knows that the incoming request is 5 bytes long and can happily parse the data.
 
-> Sending a request for station Ids
+> Sending a request for available stations
 ```json
 {
     "id": 1
 }
 ```
-> Receiving station Ids
+> Receiving all available stations
 ```json
 {
     "id": 1,
-    "stations": [0, 1, 2]
+    "stations": [
+        {
+            "stationId": 1,
+            "stationName": "WF"
+        },
+        {
+            "stationId": 2,
+            "stationName": "BS"
+        }
+    ]
 }
 ```
 
