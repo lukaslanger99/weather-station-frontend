@@ -38,30 +38,11 @@ Now the server knows that the incoming request is 5 bytes long and can happily p
 ```json
 {
     "id": 0,
-    "stationIds": [1]
-}
-```
-
-> Receiving a weather status response:
-```json
-{
-    "id": 0,
-    "stationId": 1,
-    "temperature": 27.4,
-    "humidity": 44.2,
-    "time": "2021-01-01 14:03:55"
-}
-```
-
-> Sending a weather status request (multiple stations):
-```json
-{
-    "id": 0,
     "stationIds": [1, 2]
 }
 ```
 
-> Receiving a weather status response(multiple stations):
+> Receiving a weather status response:
 ```json
 {
     "id": 0,
