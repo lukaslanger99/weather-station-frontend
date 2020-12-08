@@ -1,3 +1,7 @@
+const SINGLE_STATION_RESPONSE = 0;
+const STATIONIDS_RESPONSE = 3;
+const MULTIPLE_STATIONS_RESPONSE = 5;
+
 function getJSON() {
     const obj = {
         "id": 0,
@@ -14,6 +18,18 @@ function updateStationSelection() {
     var stations = document.getElementById("stationList");
     var stationName = stations.value;
     console.log("selected station: "+stationName);
+}
+
+function updateCheckboxList() {
+    var checkboxes = document.querySelectorAll("input[type=checkbox][name=station]");
+    let enabledSettings = []
+
+    checkboxes.forEach(function(checkbox) {
+      checkbox.addEventListener('change', function() {
+        enabledSettings = Array.from(checkboxes).filter(i => i.checked).map(i => i.value);
+    })
+    console.log(enabledSettings);
+    });
 }
 
 function getSelectedStation() {
@@ -43,5 +59,22 @@ function idToName(id) {
         return "BS";
     } else {
         return "ERROR";
+    }
+}
+
+function parseResponse(json) {
+    switch (json.id) {
+        case SINGLE_STATION_RESPONSE:
+            
+            break;
+        case STATIONIDS_RESPONSE:
+        
+            break;
+        case MULTIPLE_STATIONS_RESPONSE:
+        
+            break;
+    
+        default:
+            break;
     }
 }

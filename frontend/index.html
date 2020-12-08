@@ -7,6 +7,12 @@
         <script src="WebSocketTest.js"></script>
     </head>
     <body>
+        <fieldset class="checkboxgroup" id="checkboxgroup" onchange="updateCheckboxList()">
+            <p>Stations</p>
+            <label><input type="checkbox" name="station" value="GOE"> GOE </label>
+            <label><input type="checkbox" name="station" value="WF"> WF </label>
+            <label><input type="checkbox" name="station" value="BS"> BS </label>
+        </fieldset>
         <div class="select">
                 <select name="station" id="stationList" onchange="updateStationSelection()">
                     <option disabled selected value> -- select station -- </option>
