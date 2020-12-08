@@ -23,8 +23,21 @@ function getStations() {
     //TODO send request to server
     const obj = {
         "id": 1,
-        "stations": [0, 1, 2]
-      };
+        "stations": [
+            {
+                "stationId": 0,
+                "stationName": "GOE"
+            },
+            {
+                "stationId": 1,
+                "stationName": "WF"
+            },
+            {
+                "stationId": 2,
+                "stationName": "BS"
+            }
+        ]
+    }
     const objStr = JSON.stringify(obj);
     return JSON.parse(objStr);
 }
@@ -34,10 +47,8 @@ function createCheckboxList() {
     stationIDs = stationsJSON.stations;
     var html = "";
     stationIDs.forEach(station => {
-        var stationName = idToName(station);
-        html += "<label><input type=\"checkbox\" name=\"station\" value=\""+stationName+"\">"+stationName+"</label>"
+        html += "<label><input type=\"checkbox\" name=\"station\" value=\""+station.stationId+"\">"+station.stationName+"</label>"
     });
-    console.log(html);
     document.getElementById("checkboxgroup").innerHTML = html;
 
     addCheckboxListener();
@@ -45,18 +56,25 @@ function createCheckboxList() {
 
 function addCheckboxListener() {
     var checkboxes = document.querySelectorAll("input[type=checkbox][name=station]");
-    var enabledSettings = [];            
+    var selectedStations = [];            
     checkboxes.forEach(function(checkbox) {
       checkbox.addEventListener('change', function() {
-        enabledSettings = Array.from(checkboxes).filter(i => i.checked).map(i => i.value);
-        console.log(enabledSettings);
+        selectedStations = Array.from(checkboxes).filter(i => i.checked).map(i => parseInt(i.value));
+        requestWeatherData(selectedStations);
         })
     });
 }
 
-function getSelectedStation() {
-    var stations = document.getElementById("stationList");
-    return stations.value;
+function requestWeatherData(selectedStations) {
+    if (selectedStations.length != 0) {
+        const obj = {
+            "id": 0,
+            "stationIds": [selectedStations]
+        }
+        const objStr = JSON.stringify(obj);
+        console.log(objStr);
+        // send -> JSON.parse(objStr));
+    }
 }
 
 function getJSONFromBackend(station) {

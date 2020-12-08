@@ -58,12 +58,14 @@ Now the server knows that the incoming request is 5 bytes long and can happily p
     "stations": [
         {
             "stationId": 1,
+            "stationName": "WF",
             "temperature": 27.4,
             "humidity": 44.2,
             "time": "2021-01-01 14:03:55"
         },
         {
             "stationId": 2,
+            "stationName": "BS",
             "temperature": 30.0,
             "humidity": 84.8,
             "time": "2021-01-01 18:48:29"
