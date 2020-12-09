@@ -1,14 +1,26 @@
 const STATIONIDS_RESPONSE = 1;
 const WEATHER_RESPONSE = 0;
 
+const stationNames = {};
+
 function getJSON() {
     const obj = {
         "id": 0,
-        "stationId": 1,
-        "temperature": 27.4,
-        "humidity": 44.2,
-        "time": "2021-01-01 14:03:55"
-      };
+        "stations": [
+            {
+                "stationId": 1,
+                "temperature": 27.4,
+                "humidity": 44.2,
+                "time": "2021-01-01 14:03:55"
+            },
+            {
+                "stationId": 2,
+                "temperature": 30.0,
+                "humidity": 84.8,
+                "time": "2021-01-01 18:48:29"
+            }
+        ]
+    };
       const objStr = JSON.stringify(obj);
       return JSON.parse(objStr);
 }
@@ -37,7 +49,7 @@ function getStations() {
                 "stationName": "BS"
             }
         ]
-    }
+    };
     const objStr = JSON.stringify(obj);
     return JSON.parse(objStr);
 }
@@ -45,12 +57,12 @@ function getStations() {
 function createCheckboxList() {
     stationsJSON = getStations();
     stationIDs = stationsJSON.stations;
-    var html = "";
+    var html = "<ul class=\"checkboxList\">";
     stationIDs.forEach(station => {
-        html += "<label><input type=\"checkbox\" name=\"station\" value=\""+station.stationId+"\">"+station.stationName+"</label>"
+        html += "<li class=\"checkboxListItem\"><input type=\"checkbox\" name=\"station\" value=\""+station.stationId+"\">"+station.stationName+"</li>";
+        stationNames[station.stationId] = station.stationName;
     });
-    document.getElementById("checkboxgroup").innerHTML = html;
-
+    document.getElementById("checkboxgroup").innerHTML = html+"</ul>";
     addCheckboxListener();
 }
 
@@ -84,22 +96,22 @@ function getJSONFromBackend(station) {
 }
 
 function showData(data) {
-    document.getElementById("title").innerHTML = "Station: "+idToName(data.stationId);
-    document.getElementById("degrees").innerHTML = data.temperature+" °C";
-    document.getElementById("humidity").innerHTML = "Luftfeuchtigkeit: "+data.humidity+"%";
-    document.getElementById("date").innerHTML = data.time;
+    var html = "";
+    data.stations.forEach(station => {
+        html += "\
+        <div class=\"box\" id=\"station"+station.stationId+"\">\
+            <div id=\"title\" class=\"title\">Station: "+idToName(station.stationId)+"</div>\
+            <div id=\"degrees\" class=\"degrees\">"+station.temperature+" °C</div>\
+            <div id=\"humidity\" class=\"humidity\">Luftfeuchtigkeit: "+station.humidity+"</div>\
+            <div id=\"date\" class=\"date\">"+station.time+"</div>\
+        </div>\
+        ";
+    });
+    document.getElementById("boxes").innerHTML = html;
 }
 
 function idToName(id) {
-    if (id == 0) {
-        return "GOE";
-    } else if (id == 1) {
-        return "WF";
-    } else if (id == 2) {
-        return "BS";
-    } else {
-        return "ERROR";
-    }
+    return stationNames[id];
 }
 
 function parseResponse(json) {

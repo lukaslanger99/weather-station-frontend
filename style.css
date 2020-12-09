@@ -31,3 +31,9 @@
     font-size: large;
     font-weight: 400;
 }
+
+.checkboxList {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
