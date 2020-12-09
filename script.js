@@ -57,7 +57,8 @@ function getStations() {
 function createCheckboxList() {
     stationsJSON = getStations();
     stationIDs = stationsJSON.stations;
-    var html = "<ul class=\"checkboxList\">";
+    var html = "<ul class=\"checkboxList\">\
+    <li class=\"checkboxListItem\"><input type=\"checkbox\" name=\"groupSelector\" value=\"all\">Toggle All</li>";
     stationIDs.forEach(station => {
         html += "<li class=\"checkboxListItem\"><input type=\"checkbox\" name=\"station\" value=\""+station.stationId+"\">"+station.stationName+"</li>";
         stationNames[station.stationId] = station.stationName;
@@ -67,13 +68,22 @@ function createCheckboxList() {
 }
 
 function addCheckboxListener() {
+    selectAllCheckbox = document.querySelector("input[type=checkbox][name=groupSelector]");
+    selectAllCheckbox.addEventListener('change', function() {
+        var checkboxes = document.querySelectorAll("input[type=checkbox][name=station]");
+        checkboxes.forEach(function(checkbox) {
+            checkbox.checked = selectAllCheckbox.checked;
+        });
+        requestWeatherData(Array.from(document.querySelectorAll("input[type=checkbox][name=station]")).filter(i => i.checked).map(i => parseInt(i.value)));
+    });
+
     var checkboxes = document.querySelectorAll("input[type=checkbox][name=station]");
     var selectedStations = [];            
     checkboxes.forEach(function(checkbox) {
       checkbox.addEventListener('change', function() {
         selectedStations = Array.from(checkboxes).filter(i => i.checked).map(i => parseInt(i.value));
         requestWeatherData(selectedStations);
-        })
+        });
     });
 }
 
