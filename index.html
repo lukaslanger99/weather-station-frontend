@@ -17,6 +17,14 @@
             // json = getJSONFromBackend(getSelectedStation());
             json = getJSON();
             showData(json);
+
+            const ws = new WebSocket("ws://localhost:80");
+
+            ws.addEventListener("open", () => {
+                console.log("We are connected!");
+
+                ws.send("hey hows going");
+            });
         </script>
     </body>
 </html>
