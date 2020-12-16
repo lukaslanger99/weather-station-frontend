@@ -3,27 +3,37 @@ const WEATHER_RESPONSE = 0;
 
 const stationNames = {};
 
-function getJSON() {
-    const obj = {
-        "id": 0,
-        "stations": [
-            {
-                "stationId": 1,
-                "temperature": 27.4,
-                "humidity": 44.2,
-                "time": "2021-01-01 14:03:55"
-            },
-            {
-                "stationId": 2,
-                "temperature": 30.0,
-                "humidity": 84.8,
-                "time": "2021-01-01 18:48:29"
-            }
-        ]
-    };
-      const objStr = JSON.stringify(obj);
-      return JSON.parse(objStr);
+const ws = new WebSocket("ws://localhost:80");
+
+ws.addEventListener("open", () => {
+    console.log("We are connected!");
+});
+
+ws.onmessage = (event) => {
+    parseResponse(event.data);
 }
+
+// function getJSON(json) {
+//     // const obj = {
+//     //     "id": 0,
+//     //     "stations": [
+//     //         {
+//     //             "stationId": 1,
+//     //             "temperature": 27.4,
+//     //             "humidity": 44.2,
+//     //             "time": "2021-01-01 14:03:55"
+//     //         },
+//     //         {
+//     //             "stationId": 2,
+//     //             "temperature": 30.0,
+//     //             "humidity": 84.8,
+//     //             "time": "2021-01-01 18:48:29"
+//     //         }
+//     //     ]
+//     // };
+//       const objStr = JSON.stringify(json);
+//       return JSON.parse(objStr);
+// }
 
 function updateStationSelection() {
     var stations = document.getElementById("stationList");
@@ -31,31 +41,38 @@ function updateStationSelection() {
     console.log("selected station: "+stationName);
 }
 
-function getStations() {
-    //TODO send request to server
+
+function requestStations() {
     const obj = {
-        "id": 1,
-        "stations": [
-            {
-                "stationId": 0,
-                "stationName": "GOE"
-            },
-            {
-                "stationId": 1,
-                "stationName": "WF"
-            },
-            {
-                "stationId": 2,
-                "stationName": "BS"
-            }
-        ]
+        "id": 1
     };
-    const objStr = JSON.stringify(obj);
-    return JSON.parse(objStr);
+    ws.send(json);
 }
 
+// function getStations(json) {
+//     //TODO send request to server
+//     // const obj = {
+//     //     "id": 1,
+//     //     "stations": [
+//     //         {
+//     //             "stationId": 0,
+//     //             "stationName": "GOE"
+//     //         },
+//     //         {
+//     //             "stationId": 1,
+//     //             "stationName": "WF"
+//     //         },
+//     //         {
+//     //             "stationId": 2,
+//     //             "stationName": "BS"
+//     //         }
+//     //     ]
+//     // };
+//     const objStr = JSON.stringify(json);
+//     return JSON.parse(objStr);
+// }
+
 function createCheckboxList() {
-    stationsJSON = getStations();
     stationIDs = stationsJSON.stations;
     var html = "<ul class=\"checkboxList\">\
     <li class=\"checkboxListItem\"><input type=\"checkbox\" name=\"groupSelector\" value=\"all\">Toggle All</li>";
@@ -99,12 +116,6 @@ function requestWeatherData(selectedStations) {
     }
 }
 
-function getJSONFromBackend(station) {
-    //TODO
-    url = "";
-    ws = new WebSocket(url);
-}
-
 function showData(data) {
     var html = "";
     data.stations.forEach(station => {
@@ -127,12 +138,12 @@ function idToName(id) {
 function parseResponse(json) {
     switch (json.id) {
         case STATIONIDS_RESPONSE:
-            
+            stationsJSON = json;
+            createCheckboxList();
             break;
         case WEATHER_RESPONSE:
-        
+            showData(json);
             break;
-    
         default:
             break;
     }
