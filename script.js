@@ -1,3 +1,5 @@
+import { encode } from "@msgpack/msgpack";
+
 const STATIONIDS_RESPONSE = 1;
 const WEATHER_RESPONSE = 0;
 
@@ -51,7 +53,8 @@ function requestStations() {
         const json = {
             "id": 1
         };
-        const encoded: Uint8Array = encode({id: 1});
+
+        const encoded = encode({id: 1});
         console.log(encoded);
         ws.send(json);
     }
