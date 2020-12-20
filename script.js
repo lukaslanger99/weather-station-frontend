@@ -5,11 +5,9 @@ const stationNames = {};
 
 const ws = new WebSocket("ws://localhost:80");
 
-ws.addEventListener("open", () => {
-    console.log("We are connected!");
-});
 
 ws.onmessage = (event) => {
+    console.log(event.data);
     parseResponse(event.data);
 }
 
@@ -43,10 +41,20 @@ function updateStationSelection() {
 
 
 function requestStations() {
-    const obj = {
-        "id": 1
-    };
-    ws.send(json);
+    // const json = {
+    //     "id": 1
+    // };
+    // ws.send(json);
+    ws.onopen = () => {
+        console.log("Connection established ");
+        // requestStations();
+        const json = {
+            "id": 1
+        };
+        const encoded: Uint8Array = encode({id: 1});
+        console.log(encoded);
+        ws.send(json);
+    }
 }
 
 // function getStations(json) {

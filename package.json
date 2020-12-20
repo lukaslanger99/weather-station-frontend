@@ -2,7 +2,6 @@
   "name": "frontend",
   "type": "module",
   "version": "1.0.0",
-  "description": "",
   "main": "WebSocketTest.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,6 +9,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@msgpack/msgpack": "^2.3.0",
     "ws": "^7.4.1"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lukaslanger99/weather-station-frontend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lukaslanger99/weather-station-frontend/issues"
+  },
+  "homepage": "https://github.com/lukaslanger99/weather-station-frontend#readme",
+  "description": ""
 }
