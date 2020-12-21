@@ -1,5 +1,3 @@
-import { encode } from "@msgpack/msgpack";
-
 const STATIONIDS_RESPONSE = 1;
 const WEATHER_RESPONSE = 0;
 
@@ -9,31 +7,9 @@ const ws = new WebSocket("ws://localhost:80");
 
 
 ws.onmessage = (event) => {
-    console.log(event.data);
+    console.log("Response: "+event.data);
     parseResponse(event.data);
 }
-
-// function getJSON(json) {
-//     // const obj = {
-//     //     "id": 0,
-//     //     "stations": [
-//     //         {
-//     //             "stationId": 1,
-//     //             "temperature": 27.4,
-//     //             "humidity": 44.2,
-//     //             "time": "2021-01-01 14:03:55"
-//     //         },
-//     //         {
-//     //             "stationId": 2,
-//     //             "temperature": 30.0,
-//     //             "humidity": 84.8,
-//     //             "time": "2021-01-01 18:48:29"
-//     //         }
-//     //     ]
-//     // };
-//       const objStr = JSON.stringify(json);
-//       return JSON.parse(objStr);
-// }
 
 function updateStationSelection() {
     var stations = document.getElementById("stationList");
@@ -43,45 +19,16 @@ function updateStationSelection() {
 
 
 function requestStations() {
-    // const json = {
-    //     "id": 1
-    // };
-    // ws.send(json);
     ws.onopen = () => {
         console.log("Connection established ");
-        // requestStations();
         const json = {
             "id": 1
         };
-
-        const encoded = encode({id: 1});
-        console.log(encoded);
-        ws.send(json);
+        const hexArray = encodeToHex(json);
+        console.log("Request: "+hexArray);
+        ws.send(hexArray);
     }
 }
-
-// function getStations(json) {
-//     //TODO send request to server
-//     // const obj = {
-//     //     "id": 1,
-//     //     "stations": [
-//     //         {
-//     //             "stationId": 0,
-//     //             "stationName": "GOE"
-//     //         },
-//     //         {
-//     //             "stationId": 1,
-//     //             "stationName": "WF"
-//     //         },
-//     //         {
-//     //             "stationId": 2,
-//     //             "stationName": "BS"
-//     //         }
-//     //     ]
-//     // };
-//     const objStr = JSON.stringify(json);
-//     return JSON.parse(objStr);
-// }
 
 function createCheckboxList() {
     stationIDs = stationsJSON.stations;
@@ -117,13 +64,13 @@ function addCheckboxListener() {
 
 function requestWeatherData(selectedStations) {
     if (selectedStations.length != 0) {
-        const obj = {
+        const json = {
             "id": 0,
             "stationIds": [selectedStations]
         }
-        const objStr = JSON.stringify(obj);
-        console.log(objStr);
-        // send -> JSON.parse(objStr));
+        const hexArray = encodeToHex(json);
+        console.log("Request: "+hexArray);
+        ws.send(hexArray);
     }
 }
 
@@ -158,4 +105,35 @@ function parseResponse(json) {
         default:
             break;
     }
+}
+
+toBigEndian = function (long) {
+    var byteArray = [0, 0];
+
+    for (var i = 0; i < byteArray.length; ++i) {
+        var byte = long & 0xff;
+        byteArray[i] = byte.toString(16);
+        long = (long - byte) >> 8;
+    }
+
+    return byteArray;
+};
+
+function encodeToHex(obj) {
+    var str = JSON.stringify(obj);
+    var hexArray = [];
+
+    // size in big endian
+    var size = toBigEndian(str.length);
+    hexArray[0] = size[1];
+    hexArray[1] = size[0];
+
+    for (var i = 0; i < str.length; ++i) {
+        var bytes = [];
+        for (var j = 0; j < str[i].length; ++j) {
+            bytes.push(str[i].charCodeAt(j).toString(16));
+        }
+        hexArray.push(bytes);
+    }
+    return hexArray;
 }
