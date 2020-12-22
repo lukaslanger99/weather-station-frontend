@@ -1,10 +1,10 @@
+// perhaps a class would be cleaner here?
 const STATIONIDS_RESPONSE = 1;
 const WEATHER_RESPONSE = 0;
-
 const stationNames = {};
 
-const ws = new WebSocket("ws://localhost:80");
-
+// make sure to keep on port 8080
+const ws = new WebSocket("ws://localhost:8080");
 
 ws.onmessage = (event) => {
     console.log("Response: "+event.data);
@@ -17,16 +17,25 @@ function updateStationSelection() {
     console.log("selected station: "+stationName);
 }
 
-
 function requestStations() {
     ws.onopen = () => {
         console.log("Connection established ");
         const json = {
             "id": 1
         };
+
+        // TODO: write a helper function that does this conversion for any given json object.
         const hexArray = encodeToHex(json);
-        console.log("Request: "+hexArray);
-        ws.send(hexArray);
+        const payloadSize = hexArray.length;
+        const buffer = new ArrayBuffer(payloadSize);
+        const dataView = new DataView(buffer);
+
+        for (var i = 0; i < payloadSize; ++i) {
+            dataView.setUint8(i, hexArray[i]);
+            console.log(dataView.getUint8(i));
+        }
+
+        ws.send(dataView);
     }
 }
 
@@ -107,31 +116,32 @@ function parseResponse(json) {
     }
 }
 
-toBigEndian = function (long) {
+function toBigEndian(val) {
     var byteArray = [0, 0];
 
     for (var i = 0; i < byteArray.length; ++i) {
-        var byte = long & 0xff;
-        byteArray[i] = byte.toString(16);
-        long = (long - byte) >> 8;
+        var byte = val & 0xff;
+        byteArray[i] = byte;
+        val = (val - byte) >> 8;
     }
 
     return byteArray;
-};
+}
 
 function encodeToHex(obj) {
     var str = JSON.stringify(obj);
     var hexArray = [];
 
-    // size in big endian
+    // copy size in big endian
     var size = toBigEndian(str.length);
-    hexArray[0] = size[1];
-    hexArray[1] = size[0];
+    for (var i = 0; i < 2; ++i) {
+        hexArray[i] = size[i];
+    }
 
     for (var i = 0; i < str.length; ++i) {
         var bytes = [];
         for (var j = 0; j < str[i].length; ++j) {
-            bytes.push(str[i].charCodeAt(j).toString(16));
+            bytes.push(str[i].charCodeAt(j));
         }
         hexArray.push(bytes);
     }
