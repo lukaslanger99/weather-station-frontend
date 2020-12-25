@@ -24,18 +24,9 @@ function requestStations() {
             "id": 1
         };
 
-        // TODO: write a helper function that does this conversion for any given json object.
-        const hexArray = encodeToHex(json);
-        const payloadSize = hexArray.length;
-        const buffer = new ArrayBuffer(payloadSize);
-        const dataView = new DataView(buffer);
-
-        for (var i = 0; i < payloadSize; ++i) {
-            dataView.setUint8(i, hexArray[i]);
-            console.log(dataView.getUint8(i));
-        }
-
-        ws.send(dataView);
+        const request = encodeToHex(json);
+        console.log("Request: "+request);
+        ws.send(request);
     }
 }
 
@@ -75,11 +66,11 @@ function requestWeatherData(selectedStations) {
     if (selectedStations.length != 0) {
         const json = {
             "id": 0,
-            "stationIds": [selectedStations]
+            "stationIds": selectedStations
         }
-        const hexArray = encodeToHex(json);
-        console.log("Request: "+hexArray);
-        ws.send(hexArray);
+        const request = encodeToHex(json);
+        console.log("Request: "+request);
+        ws.send(request);
     }
 }
 
@@ -103,6 +94,7 @@ function idToName(id) {
 }
 
 function parseResponse(json) {
+    json = JSON.parse(json);
     switch (json.id) {
         case STATIONIDS_RESPONSE:
             stationsJSON = json;
@@ -145,5 +137,13 @@ function encodeToHex(obj) {
         }
         hexArray.push(bytes);
     }
-    return hexArray;
+    const payloadSize = hexArray.length;
+    const buffer = new ArrayBuffer(payloadSize);
+    const dataView = new DataView(buffer);
+
+    for (var i = 0; i < payloadSize; ++i) {
+        dataView.setUint8(i, hexArray[i]);
+        console.log(dataView.getUint8(i));
+    }
+    return dataView;
 }
