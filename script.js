@@ -94,7 +94,8 @@ function idToName(id) {
 }
 
 function parseResponse(json) {
-    json = JSON.parse(json);
+    json = JSON.stringify(json);
+    console.log("json: "+json);
     switch (json.id) {
         case STATIONIDS_RESPONSE:
             stationsJSON = json;
