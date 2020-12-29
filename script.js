@@ -80,8 +80,8 @@ function showData(data) {
         html += "\
         <div class=\"box\" id=\"station"+station.stationId+"\">\
             <div id=\"title\" class=\"boxitem\">Station: "+idToName(station.stationId)+"</div>\
-            <div id=\"degrees\" class=\"boxitem\">"+station.temperature+" °C</div>\
-            <div id=\"humidity\" class=\"boxitem\">Luftfeuchtigkeit: "+station.humidity+"</div>\
+            <div id=\"degrees\" class=\"boxitem\">"+station.temperature.toFixed(2)+" °C</div>\
+            <div id=\"humidity\" class=\"boxitem\">Luftfeuchtigkeit: "+station.humidity+" %</div>\
             <div id=\"date\" class=\"boxitem\">"+station.time+"</div>\
         </div>\
         ";
