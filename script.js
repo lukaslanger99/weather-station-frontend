@@ -79,10 +79,10 @@ function showData(data) {
     data.stations.forEach(station => {
         html += "\
         <div class=\"box\" id=\"station"+station.stationId+"\">\
-            <div id=\"title\" class=\"title\">Station: "+idToName(station.stationId)+"</div>\
-            <div id=\"degrees\" class=\"degrees\">"+station.temperature+" °C</div>\
-            <div id=\"humidity\" class=\"humidity\">Luftfeuchtigkeit: "+station.humidity+"</div>\
-            <div id=\"date\" class=\"date\">"+station.time+"</div>\
+            <div id=\"title\" class=\"boxitem\">Station: "+idToName(station.stationId)+"</div>\
+            <div id=\"degrees\" class=\"boxitem\">"+station.temperature+" °C</div>\
+            <div id=\"humidity\" class=\"boxitem\">Luftfeuchtigkeit: "+station.humidity+"</div>\
+            <div id=\"date\" class=\"boxitem\">"+station.time+"</div>\
         </div>\
         ";
     });
