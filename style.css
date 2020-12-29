@@ -3,10 +3,10 @@
 }
 
 .box {
-    width: 450px;
-    height: 250px;
-    background-color: #f2f2f2;
-    border: 1px solid #337ab7;
+    width: 80%;
+    height: 150px;
+    background-color: #fefefe;
+    border: 1px solid #525252;
     border-radius: 5px;
     text-align: center;
     position: relative;
@@ -14,22 +14,15 @@
     margin-top: 50px;
 }
 
-.title {
-    margin-top: 10%;
+.boxitem {
+    background-color: #f2f2f2;
+    width: 23%;
+    height: 70px;
+    float: left;
+    margin: 15px;
+    padding-top: 50px;
+    overflow: hidden;
     font-size: large;
-    font-weight: 700;
-}
-
-.degrees {
-    margin-top: 10%;
-    font-size: xx-large;
-    font-weight: 400;
-}
-
-.date {
-    margin-top: 10%;
-    font-size: large;
-    font-weight: 400;
 }
 
 .checkboxList {
