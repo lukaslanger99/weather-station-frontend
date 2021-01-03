@@ -3,7 +3,6 @@ const STATIONIDS_RESPONSE = 1;
 const WEATHER_RESPONSE = 0;
 const stationNames = {};
 
-// make sure to keep on port 8080
 const ws = new WebSocket("ws://localhost:8080");
 
 ws.onmessage = (event) => {
@@ -94,7 +93,7 @@ function idToName(id) {
 }
 
 function parseResponse(json) {
-    json = JSON.stringify(json);
+    json = JSON.parse(json);
     console.log("json: "+json);
     switch (json.id) {
         case STATIONIDS_RESPONSE:
