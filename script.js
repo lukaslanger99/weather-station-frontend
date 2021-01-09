@@ -13,20 +13,25 @@ ws.onmessage = (event) => {
 
 function requestStations() {
     ws.onopen = () => {
-        console.log("Connection established ");
-        const json = {
-            "id": 1
-        };
-
-        const request = encodeToHex(json);
-        console.log("Request: "+request);
-        ws.send(request);
+        sendStationRequest();
     }
+}
+
+function sendStationRequest() {
+    console.log("Connection established ");
+    const json = {
+        "id": 1
+    };
+
+    const request = encodeToHex(json);
+    console.log("Request: "+request);
+    ws.send(request);
 }
 
 function createCheckboxList() {
     stationIDs = stationsJSON.stations;
     var html = "<ul class=\"checkboxList\">\
+    <button onClick=\"sendStationRequest()\">Update</button>\
     <li class=\"checkboxListItem\"><input type=\"checkbox\" name=\"groupSelector\" value=\"all\">Toggle All</li>";
     stationIDs.forEach(station => {
         html += "<li class=\"checkboxListItem\"><input type=\"checkbox\" name=\"station\" value=\""+station.stationId+"\">"+station.stationName+"</li>";
