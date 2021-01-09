@@ -31,7 +31,8 @@ function sendStationRequest() {
 function createCheckboxList() {
     stationIDs = stationsJSON.stations;
     var html = "<ul class=\"checkboxList\">\
-    <button onClick=\"sendStationRequest()\">Update</button>\
+    Station List\
+    <button onClick=\"sendStationRequest()\">Refresh</button>\
     <li class=\"checkboxListItem\"><input type=\"checkbox\" name=\"groupSelector\" value=\"all\">Toggle All</li>";
     stationIDs.forEach(station => {
         html += "<li class=\"checkboxListItem\"><input type=\"checkbox\" name=\"station\" value=\""+station.stationId+"\">"+station.stationName+"</li>";
