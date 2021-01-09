@@ -1,19 +1,14 @@
-// perhaps a class would be cleaner here?
 const STATIONIDS_RESPONSE = 1;
 const WEATHER_RESPONSE = 0;
+
 const stationNames = {};
+const weatherData = {};
 
 const ws = new WebSocket("ws://localhost:8080");
 
 ws.onmessage = (event) => {
     console.log("Response: "+event.data);
     parseResponse(event.data);
-}
-
-function updateStationSelection() {
-    var stations = document.getElementById("stationList");
-    var stationName = stations.value;
-    console.log("selected station: "+stationName);
 }
 
 function requestStations() {
@@ -37,6 +32,7 @@ function createCheckboxList() {
         html += "<li class=\"checkboxListItem\"><input type=\"checkbox\" name=\"station\" value=\""+station.stationId+"\">"+station.stationName+"</li>";
         stationNames[station.stationId] = station.stationName;
     });
+    html += "<button onClick=\"requestWeatherData()\">Send</button>";
     document.getElementById("checkboxgroup").innerHTML = html+"</ul>";
     addCheckboxListener();
 }
@@ -48,43 +44,62 @@ function addCheckboxListener() {
         checkboxes.forEach(function(checkbox) {
             checkbox.checked = selectAllCheckbox.checked;
         });
-        requestWeatherData(Array.from(document.querySelectorAll("input[type=checkbox][name=station]")).filter(i => i.checked).map(i => parseInt(i.value)));
     });
+}
 
+function getSelectedStations() {
     var checkboxes = document.querySelectorAll("input[type=checkbox][name=station]");
     var selectedStations = [];            
-    checkboxes.forEach(function(checkbox) {
-      checkbox.addEventListener('change', function() {
+    checkboxes.forEach(function() {
         selectedStations = Array.from(checkboxes).filter(i => i.checked).map(i => parseInt(i.value));
-        requestWeatherData(selectedStations);
-        });
     });
+    resetCheckboxList(checkboxes);
+    return selectedStations;
 }
 
-function requestWeatherData(selectedStations) {
-    if (selectedStations.length != 0) {
-        const json = {
-            "id": 0,
-            "stationIds": selectedStations
-        }
-        const request = encodeToHex(json);
-        console.log("Request: "+request);
-        ws.send(request);
+function resetCheckboxList(checkboxes) {
+    checkboxes.forEach(function(checkbox) {
+        checkbox.checked = false;
+    });
+    selectAllCheckbox = document.querySelector("input[type=checkbox][name=groupSelector]");
+    selectAllCheckbox.checked = false;
+}
+
+function requestWeatherData() {
+    const json = {
+        "id": 0,
+        "stationIds": getSelectedStations()
     }
+    const request = encodeToHex(json);
+    console.log("Request: "+request);
+    ws.send(request);
 }
 
-function showData(data) {
+function saveData(data) {
+    weatherData[data['stationId']] = data;
+}
+
+function deleteStation(id) {
+    delete weatherData[id];
+    showData();
+}
+
+function showData() {
     var html = "";
-    data.stations.forEach(station => {
+    for (var station in weatherData) {
+        var stationId = weatherData[station]["stationId"];
         html += "\
-        <div class=\"box\" id=\"station"+station.stationId+"\">\
-            <div id=\"title\" class=\"boxitem\">Station: "+idToName(station.stationId)+"</div>\
-            <div id=\"degrees\" class=\"boxitem\">"+station.temperature.toFixed(2)+" °C</div>\
-            <div id=\"humidity\" class=\"boxitem\">Luftfeuchtigkeit: "+station.humidity+" %</div>\
-            <div id=\"date\" class=\"boxitem\">"+station.time+"</div>\
+        <div class=\"box\" id=\"station"+stationId+"\">\
+            <div class\"stationdata\">\
+            <div id=\"title\" class=\"boxitem\">Station: "+idToName(stationId)+"</div>\
+            <div id=\"degrees\" class=\"boxitem\">"+(weatherData[station]["temperature"]).toFixed(1)+" °C</div>\
+            <div id=\"humidity\" class=\"boxitem\">Humidity: "+(weatherData[station]["humidity"]).toFixed(1)+" %</div>\
+            <div id=\"date\" class=\"boxitem\">"+weatherData[station]["time"]+"</div>\
+            </div>\
+            <div class=\"buttonbox\"><button onClick=\"deleteStation("+stationId+")\">Delete</button></div>\
         </div>\
         ";
-    });
+    }
     document.getElementById("boxes").innerHTML = html;
 }
 
@@ -94,14 +109,14 @@ function idToName(id) {
 
 function parseResponse(json) {
     json = JSON.parse(json);
-    console.log("json: "+json);
     switch (json.id) {
         case STATIONIDS_RESPONSE:
             stationsJSON = json;
             createCheckboxList();
             break;
         case WEATHER_RESPONSE:
-            showData(json);
+            saveData(json);
+            showData();
             break;
         default:
             break;
@@ -143,7 +158,7 @@ function encodeToHex(obj) {
 
     for (var i = 0; i < payloadSize; ++i) {
         dataView.setUint8(i, hexArray[i]);
-        console.log(dataView.getUint8(i));
+        // console.log(dataView.getUint8(i));
     }
     return dataView;
 }
