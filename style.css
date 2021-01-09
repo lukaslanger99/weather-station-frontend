@@ -4,17 +4,19 @@
 
 .box {
     height: 150px;
+    width: 80%;
     background-color: #fefefe;
     border: 1px solid #525252;
     border-radius: 5px;
     text-align: center;
     position: relative;
-    margin: auto;
-    margin-top: 50px;
+    float: right;
+    margin-right: 20px;
+    margin-bottom: 15px;
 }
 
 .stationdata {
-    width: 80%;
+    width: 85%;
     float: left;
 }
 
@@ -40,4 +42,5 @@
     border: 1px solid black;
     width: 10%;
     border-radius: 5px;
+    float: left;
 }
