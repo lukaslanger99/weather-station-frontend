@@ -11,9 +11,20 @@ ws.onmessage = (event) => {
     parseResponse(event.data);
 }
 
+ws.onclose = function(e) {
+    console.log('Socket is closed. Reconnect will be attempted in 1 second.', e.reason);
+    setTimeout(function() {
+      connect();
+    }, 1000);
+};
+
 function requestStations() {
     ws.onopen = () => {
         sendStationRequest();
+        (function() {
+            refreshData();
+            setTimeout(arguments.callee, 10000);
+        })();
     }
 }
 
@@ -53,6 +64,14 @@ function addCheckboxListener() {
     });
 }
 
+function getActiveStations() {
+    var stations = [];
+    for (var station in weatherData) {
+        stations.push(station);
+    }
+    return stations;
+}
+
 function getSelectedStations() {
     var checkboxes = document.querySelectorAll("input[type=checkbox][name=station]");
     var selectedStations = [];            
@@ -69,6 +88,16 @@ function resetCheckboxList(checkboxes) {
     });
     selectAllCheckbox = document.querySelector("input[type=checkbox][name=groupSelector]");
     selectAllCheckbox.checked = false;
+}
+
+function refreshData() {
+    const json = {
+        "id": 0,
+        "stationIds": getActiveStations()
+    }
+    const request = encodeToHex(json);
+    console.log("Request: "+request);
+    ws.send(request);
 }
 
 function requestWeatherData() {
