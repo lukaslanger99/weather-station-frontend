@@ -4,7 +4,7 @@ const WEATHER_RESPONSE = 0;
 const stationNames = {};
 const weatherData = {};
 
-const ws = new WebSocket("ws://localhost:8080");
+const ws = new WebSocket("https://weather-station.cloudns.asia:8081/");
 
 ws.onmessage = (event) => {
     console.log("Response: "+event.data);
